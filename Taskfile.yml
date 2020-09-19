@@ -1,0 +1,26 @@
+version: '3'
+
+vars:
+  cluster_name: local
+
+tasks:
+
+  start:
+    desc: Starts the k8s cluster
+    cmds:
+      - k3d cluster start {{.cluster_name}}
+  
+  stop:
+    desc: Stops the k8s cluster
+    cmds:
+      - k3d cluster stop {{.cluster_name}}
+
+  delete:
+    desc: Delete the k8s cluster
+    cmds:
+      - k3d cluster delete {{.cluster_name}}
+  
+  create:
+    desc: Create the k8s cluster
+    cmds:
+      - ./k3d.sh
