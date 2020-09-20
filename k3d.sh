@@ -4,7 +4,8 @@ CLUSTER_NAME="${CLUSTER_NAME:-local}"
 
 # create a cluster with the local registry enabled 
 echo "🐳 Creating k3d with local Registry"
-k3d cluster create -i rancher/k3s:v1.19.1-rc1-k3s1 \
+k3d cluster create -i rancher/k3s:v1.19.2-rc2-k3s1 \
+  --api-port 6550 -p 8081:80@loadbalancer \
   -a 2 --volume $(pwd)/registries.yaml:/etc/rancher/k3s/registries.yaml "${CLUSTER_NAME}"
 # Annotate nodes with registry info for Tilt to auto-detect
 echo "⏳ Waiting for node(s) + annotating with registry info..."
