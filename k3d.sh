@@ -4,7 +4,11 @@ CLUSTER_NAME="${CLUSTER_NAME:-local}"
 
 # create a cluster with the local registry enabled 
 echo "🐳 Creating k3d with local Registry"
-k3d cluster create -i rancher/k3s:v1.19.2-rc2-k3s1 \
+k3d cluster create -i rancher/k3s:v1.17.12-k3s1 \
+  --k3s-server-arg '--kube-controller-manager-arg=horizontal-pod-autoscaler-downscale-delay=5s' \
+  --k3s-server-arg '--kube-controller-manager-arg=horizontal-pod-autoscaler-downscale-stabilization=5s' \
+  --k3s-server-arg '--kube-controller-manager-arg=horizontal-pod-autoscaler-upscale-delay=5s' \
+  --k3s-server-arg '--kube-controller-manager-arg=horizontal-pod-autoscaler-sync-period=2s' \
   --api-port 6550 -p 8081:80@loadbalancer \
   -a 2 --volume $(pwd)/registries.yaml:/etc/rancher/k3s/registries.yaml "${CLUSTER_NAME}"
 # Annotate nodes with registry info for Tilt to auto-detect
