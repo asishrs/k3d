@@ -20,8 +20,8 @@ until [[ $(date +%s) -gt $timeout ]]; do
   if [ ! -z "${nodes}" ]; then
     for node in $nodes; do
       kubectl annotate node "${node}" \
-              tilt.dev/registry=localhost:${reg_port} \
-              tilt.dev/registry-from-cluster=localhost:${reg_port}
+              tilt.dev/registry=${reg_name}:${reg_port} \
+              tilt.dev/registry-from-cluster=${reg_name}:${reg_port}
     done
     DONE=true
     break
