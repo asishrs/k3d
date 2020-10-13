@@ -4,7 +4,7 @@ CLUSTER_NAME="${CLUSTER_NAME:-local}"
 
 # create a cluster with the local registry enabled 
 echo "🐳 Creating k3d with local Registry"
-k3d cluster create -i rancher/k3s:v1.19.1-rc1-k3s1 \
+k3d cluster create -i rancher/k3s:v1.19.2-k3s1 \
   -a 2 --volume $(pwd)/registries.yaml:/etc/rancher/k3s/registries.yaml "${CLUSTER_NAME}"
 # Annotate nodes with registry info for Tilt to auto-detect
 echo "⏳ Waiting for node(s) + annotating with registry info..."
@@ -15,8 +15,8 @@ until [[ $(date +%s) -gt $timeout ]]; do
   if [ ! -z "${nodes}" ]; then
     for node in $nodes; do
       kubectl annotate node "${node}" \
-              tilt.dev/registry=localhost:${reg_port} \
-              tilt.dev/registry-from-cluster=localhost:${reg_port}
+              tilt.dev/registry=${reg_name}:${reg_port} \
+              tilt.dev/registry-from-cluster=${reg_name}:${reg_port}
     done
     DONE=true
     break
